@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h2 class="card-title mb-0">
+                    <i class="fas fa-info-circle me-2"></i>About MLCrop Recommender
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4>What is MLCrop Recommender?</h4>
+                        <p>The <strong>MLCrop Recommender</strong> is a Crop Recommendation System that uses machine learning to predict the most suitable crop for your specific soil and climate conditions. The system analyzes seven key parameters to provide accurate recommendations.</p>
+
+                        <h4>How does it work?</h4>
+                        <p>The system uses advanced machine learning algorithms trained on agricultural data to analyze:</p>
+                        <ul>
+                            <li><strong>Soil Nutrients:</strong> Nitrogen (N), Phosphorus (P), Potassium (K)</li>
+                            <li><strong>Soil Chemistry:</strong> pH level</li>
+                            <li><strong>Climate Factors:</strong> Temperature, Humidity, Rainfall</li>
+                        </ul>
+
+                        <h4>Developer Information</h4>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-user-circle me-2 fs-4"></i>
+                                    <h5 class="mb-0">Abhiram Swarnatt</h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <i class="fas fa-id-card me-2"></i>
+                                        <strong>Registration No:</strong> 23PCOMP001
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fab fa-github me-2"></i>
+                                        <strong>GitHub:</strong> 
+                                        <a href="https://github.com/a6his" target="_blank">
+                                            github.com/a6his
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h4>System Information</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <p><i class="fas fa-brain me-2"></i><strong>Current Model:</strong> {{ model_name }}</p>
+                                <p><i class="fas fa-sliders-h me-2"></i><strong>Parameters:</strong> 7</p>
+                                <p><i class="fas fa-seedling me-2"></i><strong>Crop Types:</strong> 22+</p>
+                                <p><i class="fas fa-chart-line me-2"></i><strong>Accuracy:</strong> High</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <h5>Quick Tips</h5>
+                            <div class="alert alert-warning">
+                                <small>
+                                    <i class="fas fa-lightbulb me-1"></i>
+                                    Always consider local farming practices and market conditions along with our recommendations.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+,accuracy,auc_roc,f1_score,log_loss,model_name,precision,recall
+accuracy,0.9954545454545456,,,,Gaussian Naive Bayes,,
+precision,,,,,Gaussian Naive Bayes,0.9958181818181816,
+recall,,,,,Gaussian Naive Bayes,,0.9954545454545456
+f1_score,,,0.99542297979798,,Gaussian Naive Bayes,,
+auc_roc,,0.9999890996293874,,,Gaussian Naive Bayes,,
+log_loss,,,,0.0165481289540683,Gaussian Naive Bayes,,

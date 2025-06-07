@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title mb-0">
+                    <i class="fas fa-leaf me-2"></i>Smart Crop Recommendation System
+                </h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">Enter your soil and climate parameters to get the best crop recommendation for your field.</p>
+                <p class="text-muted">Currently using: <strong>{{ model_name }}</strong></p>
+
+                <form method="POST" action="{{ url_for('predict') }}" id="cropForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-primary"><i class="fas fa-flask me-2"></i>Soil Nutrients</h5>
+
+                            <div class="mb-3">
+                                <label for="nitrogen" class="form-label">Nitrogen (N) - kg/ha</label>
+                                <input type="number" step="0.01" class="form-control" id="nitrogen" name="nitrogen"
+                                       min="0" max="300" required placeholder="0-300">
+                                <div class="form-text">Essential for leaf growth</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phosphorus" class="form-label">Phosphorus (P) - kg/ha</label>
+                                <input type="number" step="0.01" class="form-control" id="phosphorus" name="phosphorus"
+                                       min="0" max="150" required placeholder="0-150">
+                                <div class="form-text">Important for root development</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="potassium" class="form-label">Potassium (K) - kg/ha</label>
+                                <input type="number" step="0.01" class="form-control" id="potassium" name="potassium"
+                                       min="0" max="300" required placeholder="0-300">
+                                <div class="form-text">Helps in disease resistance</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="ph" class="form-label">Soil pH</label>
+                                <input type="number" step="0.1" class="form-control" id="ph" name="ph"
+                                       min="3" max="10" required placeholder="3.0-10.0">
+                                <div class="form-text">Soil acidity/alkalinity level</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="text-info"><i class="fas fa-cloud-sun me-2"></i>Climate Conditions</h5>
+
+                            <div class="mb-3">
+                                <label for="temperature" class="form-label">Temperature - °C</label>
+                                <input type="number" step="0.1" class="form-control" id="temperature" name="temperature"
+                                       min="8" max="50" required placeholder="8-50">
+                                <div class="form-text">Average temperature</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="humidity" class="form-label">Humidity - %</label>
+                                <input type="number" step="0.1" class="form-control" id="humidity" name="humidity"
+                                       min="10" max="100" required placeholder="10-100">
+                                <div class="form-text">Relative humidity percentage</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="rainfall" class="form-label">Rainfall - mm</label>
+                                <input type="number" step="0.1" class="form-control" id="rainfall" name="rainfall"
+                                       min="20" max="300" required placeholder="20-300">
+                                <div class="form-text">Average rainfall</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-search me-2"></i>Get Crop Recommendation
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary btn-lg ms-2">
+                            <i class="fas fa-redo me-2"></i>Reset Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Quick Fill Examples</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-primary btn-sm w-100" onclick="fillExample('rice')">Rice Example</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-primary btn-sm w-100" onclick="fillExample('coffee')">Coffee Example</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-primary btn-sm w-100" onclick="fillExample('banana')">Banana Example</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

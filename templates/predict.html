@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h2 class="card-title mb-0">
+                    <i class="fas fa-seedling me-2"></i>Crop Recommendation Result
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="alert alert-success" role="alert">
+                        <h3 class="alert-heading">
+                            <i class="fas fa-leaf me-2"></i>Recommended Crop: 
+                            <strong class="text-uppercase">{{ result.predicted_crop }}</strong>
+                        </h3>
+                        {% if result.confidence %}
+                        <hr>
+                        <p class="mb-0">
+                            <strong>Confidence:</strong> {{ "%.1f"|format(result.confidence * 100) }}%
+                        </p>
+                        {% endif %}
+                        <p class="mb-0">
+                            <strong>Model Used:</strong> {{ result.model_used }}
+                        </p>
+                    </div>
+                </div>
+                
+                {% if result.confidence %}
+                <div class="mb-4">
+                    <h5>Prediction Confidence</h5>
+                    <div class="progress" style="height: 30px;">
+                        <div class="progress-bar bg-success" role="progressbar" 
+                             style="width: {{ result.confidence * 100 }}%"
+                             aria-valuenow="{{ result.confidence * 100 }}" 
+                             aria-valuemin="0" aria-valuemax="100">
+                            {{ "%.1f"|format(result.confidence * 100) }}%
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Parameter Analysis Table -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-chart-line me-2"></i>Parameter Analysis for {{ result.predicted_crop.title() }}
+                        </h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr class="bg-light">
+                                        <th>Parameter</th>
+                                        <th>Your Input</th>
+                                        <th>Optimal Range</th>
+                                        <th>Status</th>
+                                        <th>Recommendation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if comparison %}
+                                        <tr class="{% if comparison.N.status == 'optimal' %}table-success{% elif comparison.N.status == 'low' %}table-warning{% else %}table-danger{% endif %}">
+                                            <td><strong>Nitrogen (N)</strong></td>
+                                            <td>{{ input_data.N }} kg/ha</td>
+                                            <td>{{ comparison.N.recommended_min }}-{{ comparison.N.recommended_max }} kg/ha</td>
+                                            <td>
+                                                {% if comparison.N.status == 'optimal' %}
+                                                    <span class="badge bg-success">Optimal</span>
+                                                {% elif comparison.N.status == 'low' %}
+                                                    <span class="badge bg-warning">Low</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">High</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ comparison.N.suggestion }}</td>
+                                        </tr>
+                                        <tr class="{% if comparison.P.status == 'optimal' %}table-success{% elif comparison.P.status == 'low' %}table-warning{% else %}table-danger{% endif %}">
+                                            <td><strong>Phosphorus (P)</strong></td>
+                                            <td>{{ input_data.P }} kg/ha</td>
+                                            <td>{{ comparison.P.recommended_min }}-{{ comparison.P.recommended_max }} kg/ha</td>
+                                            <td>
+                                                {% if comparison.P.status == 'optimal' %}
+                                                    <span class="badge bg-success">Optimal</span>
+                                                {% elif comparison.P.status == 'low' %}
+                                                    <span class="badge bg-warning">Low</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">High</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ comparison.P.suggestion }}</td>
+                                        </tr>
+                                        <tr class="{% if comparison.K.status == 'optimal' %}table-success{% elif comparison.K.status == 'low' %}table-warning{% else %}table-danger{% endif %}">
+                                            <td><strong>Potassium (K)</strong></td>
+                                            <td>{{ input_data.K }} kg/ha</td>
+                                            <td>{{ comparison.K.recommended_min }}-{{ comparison.K.recommended_max }} kg/ha</td>
+                                            <td>
+                                                {% if comparison.K.status == 'optimal' %}
+                                                    <span class="badge bg-success">Optimal</span>
+                                                {% elif comparison.K.status == 'low' %}
+                                                    <span class="badge bg-warning">Low</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">High</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ comparison.K.suggestion }}</td>
+                                        </tr>
+                                        <tr class="{% if comparison.temperature.status == 'optimal' %}table-success{% elif comparison.temperature.status == 'low' %}table-warning{% else %}table-danger{% endif %}">
+                                            <td><strong>Temperature</strong></td>
+                                            <td>{{ input_data.temperature }} °C</td>
+                                            <td>{{ comparison.temperature.recommended_min }}-{{ comparison.temperature.recommended_max }} °C</td>
+                                            <td>
+                                                {% if comparison.temperature.status == 'optimal' %}
+                                                    <span class="badge bg-success">Optimal</span>
+                                                {% elif comparison.temperature.status == 'low' %}
+                                                    <span class="badge bg-warning">Low</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">High</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ comparison.temperature.suggestion }}</td>
+                                        </tr>
+                                        <tr class="{% if comparison.humidity.status == 'optimal' %}table-success{% elif comparison.humidity.status == 'low' %}table-warning{% else %}table-danger{% endif %}">
+                                            <td><strong>Humidity</strong></td>
+                                            <td>{{ input_data.humidity }} %</td>
+                                            <td>{{ comparison.humidity.recommended_min }}-{{ comparison.humidity.recommended_max }} %</td>
+                                            <td>
+                                                {% if comparison.humidity.status == 'optimal' %}
+                                                    <span class="badge bg-success">Optimal</span>
+                                                {% elif comparison.humidity.status == 'low' %}
+                                                    <span class="badge bg-warning">Low</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">High</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ comparison.humidity.suggestion }}</td>
+                                        </tr>
+                                        <tr class="{% if comparison.ph.status == 'optimal' %}table-success{% elif comparison.ph.status == 'low' %}table-warning{% else %}table-danger{% endif %}">
+                                            <td><strong>pH Level</strong></td>
+                                            <td>{{ input_data.ph }}</td>
+                                            <td>{{ comparison.ph.recommended_min }}-{{ comparison.ph.recommended_max }}</td>
+                                            <td>
+                                                {% if comparison.ph.status == 'optimal' %}
+                                                    <span class="badge bg-success">Optimal</span>
+                                                {% elif comparison.ph.status == 'low' %}
+                                                    <span class="badge bg-warning">Low</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">High</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ comparison.ph.suggestion }}</td>
+                                        </tr>
+                                        <tr class="{% if comparison.rainfall.status == 'optimal' %}table-success{% elif comparison.rainfall.status == 'low' %}table-warning{% else %}table-danger{% endif %}">
+                                            <td><strong>Rainfall</strong></td>
+                                            <td>{{ input_data.rainfall }} mm</td>
+                                            <td>{{ comparison.rainfall.recommended_min }}-{{ comparison.rainfall.recommended_max }} mm</td>
+                                            <td>
+                                                {% if comparison.rainfall.status == 'optimal' %}
+                                                    <span class="badge bg-success">Optimal</span>
+                                                {% elif comparison.rainfall.status == 'low' %}
+                                                    <span class="badge bg-warning">Low</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">High</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ comparison.rainfall.suggestion }}</td>
+                                        </tr>
+                                    {% else %}
+                                        <!-- Fallback if comparison data is not available -->
+                                        <tr>
+                                            <td><strong>Nitrogen (N)</strong></td>
+                                            <td>{{ input_data.N }} kg/ha</td>
+                                            <td colspan="3">Recommendation data not available</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Phosphorus (P)</strong></td>
+                                            <td>{{ input_data.P }} kg/ha</td>
+                                            <td colspan="3">Recommendation data not available</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Potassium (K)</strong></td>
+                                            <td>{{ input_data.K }} kg/ha</td>
+                                            <td colspan="3">Recommendation data not available</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Temperature</strong></td>
+                                            <td>{{ input_data.temperature }} °C</td>
+                                            <td colspan="3">Recommendation data not available</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Humidity</strong></td>
+                                            <td>{{ input_data.humidity }} %</td>
+                                            <td colspan="3">Recommendation data not available</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>pH Level</strong></td>
+                                            <td>{{ input_data.ph }}</td>
+                                            <td colspan="3">Recommendation data not available</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Rainfall</strong></td>
+                                            <td>{{ input_data.rainfall }} mm</td>
+                                            <td colspan="3">Recommendation data not available</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <h5 class="text-info">Additional Crop Information</h5>
+                    <div id="cropInfo">
+                        <p>The given crop <strong>{{ result.predicted_crop }},</strong> is suitable for your soil and climate conditions by adjusting the parameters as above.</p>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Tips:</strong> Consider local market conditions, water availability, and farming experience when making your final decision.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Make Another Prediction
+                    </a>
+                    <button onclick="window.print()" class="btn btn-outline-secondary btn-lg ms-2">
+                        <i class="fas fa-print me-2"></i>Print Result
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    .btn, .card-header {
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
+}
+</style>
+{% endblock %}
