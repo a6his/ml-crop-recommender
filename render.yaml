@@ -3,7 +3,7 @@ services:
     name: ml-crop-recommender
     runtime: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+   startCommand: "gunicorn --worker-tmp-dir /dev/shm app:app"
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.7
